@@ -32,6 +32,7 @@ class FirstViewController: UIViewController {
     // MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Sales Dashboard - KPI"
         view.backgroundColor = .white
         addSubViews()
 
