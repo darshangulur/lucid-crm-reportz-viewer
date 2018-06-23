@@ -13,7 +13,16 @@ import TinyConstraints
 class FirstViewController: UIViewController {
 
     // MARK: - Private properties
+    private lazy var titleLabel: UILabel = {
+        $0.numberOfLines = 1
+        $0.font = UIFont(name: "Helvetica-Bold", size: 35)
+        $0.textColor = .gray
+        $0.textAlignment = .center
+        return $0
+    }(UILabel())
+
     private let ITEM_COUNT = 12
+    private let padding: CGFloat = 100
     private var chartView = CombinedChartView()
     private let months = ["Jan", "Feb", "Mar",
                           "Apr", "May", "Jun",
@@ -24,16 +33,30 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        addCombinedChartView()
+        addSubViews()
+
+        titleLabel.text = "Sales per month and projections for FY 2019-20"
     }
 
     // MARK: - Private functions
+    private func addSubViews() {
+        addCombinedChartView()
+        view.addSubview(titleLabel)
+
+        titleLabel.edgesToSuperview(excluding: .top,
+                                    insets: TinyEdgeInsets(top: 0,
+                                                           left: padding,
+                                                           bottom: padding,
+                                                           right: -padding))
+        titleLabel.topToBottom(of: chartView, offset: padding / 4)
+    }
     private func addCombinedChartView() {
         view.addSubview(chartView)
-        let padding: CGFloat = 100
-        chartView.edgesToSuperview(insets: TinyEdgeInsets(top: padding,
+
+        chartView.edgesToSuperview(excluding: .bottom,
+                                   insets: TinyEdgeInsets(top: padding,
                                                           left: padding,
-                                                          bottom: padding,
+                                                          bottom: padding * 2,
                                                           right: -padding))
 
 //        chartView.delegate = self
@@ -42,7 +65,6 @@ class FirstViewController: UIViewController {
 
         chartView.drawBarShadowEnabled = false
         chartView.highlightFullBarEnabled = false
-
 
         chartView.drawOrder = [DrawOrder.bar.rawValue,
                                DrawOrder.bubble.rawValue,
@@ -91,7 +113,7 @@ class FirstViewController: UIViewController {
             return ChartDataEntry(x: Double(i) + 0.5, y: Double(arc4random_uniform(15) + 5))
         }
 
-        let set = LineChartDataSet(values: entries, label: "Line DataSet")
+        let set = LineChartDataSet(values: entries, label: "Revenue by month")
         set.setColor(UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1))
         set.lineWidth = 2.5
         set.setCircleColor(UIColor(red: 240/255, green: 238/255, blue: 70/255, alpha: 1))
@@ -116,14 +138,14 @@ class FirstViewController: UIViewController {
             return BarChartDataEntry(x: 0, yValues: [Double(arc4random_uniform(13) + 12), Double(arc4random_uniform(13) + 12)])
         }
 
-        let set1 = BarChartDataSet(values: entries1, label: "Bar 1")
+        let set1 = BarChartDataSet(values: entries1, label: "Projected monthly sales")
         set1.setColor(UIColor(red: 60/255, green: 220/255, blue: 78/255, alpha: 1))
         set1.valueTextColor = UIColor(red: 60/255, green: 220/255, blue: 78/255, alpha: 1)
         set1.valueFont = .systemFont(ofSize: 10)
         set1.axisDependency = .left
 
         let set2 = BarChartDataSet(values: entries2, label: "")
-        set2.stackLabels = ["Stack 1", "Stack 2"]
+        set2.stackLabels = ["Current month profit", "expenses"]
         set2.colors = [UIColor(red: 61/255, green: 165/255, blue: 255/255, alpha: 1),
                        UIColor(red: 23/255, green: 197/255, blue: 255/255, alpha: 1)
         ]
@@ -150,7 +172,7 @@ class FirstViewController: UIViewController {
             return ChartDataEntry(x: i+0.25, y: Double(arc4random_uniform(10) + 55))
         }
 
-        let set = ScatterChartDataSet(values: entries, label: "Scatter DataSet")
+        let set = ScatterChartDataSet(values: entries, label: "Scatter plot representation")
         set.colors = ChartColorTemplates.material()
         set.scatterShapeSize = 4.5
         set.drawValuesEnabled = false
@@ -164,7 +186,7 @@ class FirstViewController: UIViewController {
             return CandleChartDataEntry(x: Double(i+1), shadowH: 90, shadowL: 70, open: 85, close: 75)
         }
 
-        let set = CandleChartDataSet(values: entries, label: "Candle DataSet")
+        let set = CandleChartDataSet(values: entries, label: "Profit range")
         set.setColor(UIColor(red: 80/255, green: 80/255, blue: 80/255, alpha: 1))
         set.decreasingColor = UIColor(red: 142/255, green: 150/255, blue: 175/255, alpha: 1)
         set.shadowColor = .darkGray
@@ -181,7 +203,7 @@ class FirstViewController: UIViewController {
                                         size: CGFloat(arc4random_uniform(50) + 105))
         }
 
-        let set = BubbleChartDataSet(values: entries, label: "Bubble DataSet")
+        let set = BubbleChartDataSet(values: entries, label: "Projection for next year (all numbers in millions of Dollars)")
         set.setColors(ChartColorTemplates.vordiplom(), alpha: 1)
         set.valueTextColor = .white
         set.valueFont = .systemFont(ofSize: 10)
