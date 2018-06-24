@@ -22,7 +22,8 @@ class SecondViewController: UIViewController {
     }(UILabel())
 
     private let padding: CGFloat = 100
-    private var chartView = HorizontalBarChartView()
+    private var barChartView = HorizontalBarChartView()
+    private var lineChartView = LineChartView()
 
     // MARK: - Overrides
     override func viewDidLoad() {
@@ -36,6 +37,7 @@ class SecondViewController: UIViewController {
 
     // MARK: - Private functions
     private func addSubViews() {
+        addLineChartView()
         addCombinedChartView()
         view.addSubview(titleLabel)
 
@@ -44,54 +46,55 @@ class SecondViewController: UIViewController {
                                                            left: padding,
                                                            bottom: padding,
                                                            right: -padding))
-        titleLabel.topToBottom(of: chartView, offset: padding / 4)
+        titleLabel.topToBottom(of: barChartView, offset: padding / 4)
     }
     
     private func addCombinedChartView() {
-        view.addSubview(chartView)
+        view.addSubview(barChartView)
 
-        chartView.edgesToSuperview(excluding: .bottom,
-                                   insets: TinyEdgeInsets(top: padding,
-                                                          left: padding,
-                                                          bottom: 0,
-                                                          right: -padding))
+        barChartView.edgesToSuperview(excluding: [.top, .bottom],
+                                      insets: TinyEdgeInsets(top: padding,
+                                                             left: padding,
+                                                             bottom: 0,
+                                                             right: -padding))
+        barChartView.topToBottom(of: lineChartView, offset: padding / 2)
 
         //        chartView.delegate = self
 
-        chartView.chartDescription?.enabled = false
+        barChartView.chartDescription?.enabled = false
 
-        chartView.dragEnabled = true
-        chartView.setScaleEnabled(true)
-        chartView.pinchZoomEnabled = false
+        barChartView.dragEnabled = true
+        barChartView.setScaleEnabled(true)
+        barChartView.pinchZoomEnabled = false
 
         // ChartYAxis *leftAxis = chartView.leftAxis;
 
-        chartView.rightAxis.enabled = false
+        barChartView.rightAxis.enabled = false
 
-        chartView.drawBarShadowEnabled = false
-        chartView.drawValueAboveBarEnabled = true
+        barChartView.drawBarShadowEnabled = false
+        barChartView.drawValueAboveBarEnabled = true
 
-        chartView.maxVisibleCount = 60
+        barChartView.maxVisibleCount = 60
 
-        let xAxis = chartView.xAxis
+        let xAxis = barChartView.xAxis
         xAxis.labelPosition = .bottom
         xAxis.labelFont = .systemFont(ofSize: 10)
         xAxis.drawAxisLineEnabled = true
         xAxis.granularity = 10
 
-        let leftAxis = chartView.leftAxis
+        let leftAxis = barChartView.leftAxis
         leftAxis.labelFont = .systemFont(ofSize: 10)
         leftAxis.drawAxisLineEnabled = true
         leftAxis.drawGridLinesEnabled = true
         leftAxis.axisMinimum = 0
 
-        let rightAxis = chartView.rightAxis
+        let rightAxis = barChartView.rightAxis
         rightAxis.enabled = true
         rightAxis.labelFont = .systemFont(ofSize: 10)
         rightAxis.drawAxisLineEnabled = true
         rightAxis.axisMinimum = 0
 
-        let l = chartView.legend
+        let l = barChartView.legend
         l.horizontalAlignment = .left
         l.verticalAlignment = .bottom
         l.orientation = .horizontal
@@ -102,12 +105,12 @@ class SecondViewController: UIViewController {
         l.xEntrySpace = 4
         //        chartView.legend = l
 
-        chartView.fitBars = true
-        chartView.animate(yAxisDuration: 1)
-        self.setDataCount(3, range: 50)
+        barChartView.fitBars = true
+        barChartView.animate(yAxisDuration: 1)
+        self.setBarChartDataCount(3, range: 50)
     }
 
-    func setDataCount(_ count: Int, range: UInt32) {
+    private func setBarChartDataCount(_ count: Int, range: UInt32) {
         let barWidth = 9.0
         let spaceForBar = 10.0
 
@@ -117,18 +120,77 @@ class SecondViewController: UIViewController {
             return BarChartDataEntry(x: Double(i)*spaceForBar, y: val)
         }
 
-        chartView.xAxis.valueFormatter = StringValueFormatter(
-            chart: chartView,
-            strings: ["Blue Resorts", "James Corp", "BMC Metro Works"]
+        barChartView.xAxis.valueFormatter = StringValueFormatter(
+            chart: barChartView,
+            strings: ["Hamilton Hotels Group", "Blue state Insurance Corp.", "Hudson Metro Works"]
         )
 
-        let set1 = BarChartDataSet(values: yVals, label: "Performance of teams in Q1 (out of \(range)")
+        let set1 = BarChartDataSet(values: yVals, label: "Team Performances in Q1 (out of \(range)")
         set1.drawIconsEnabled = false
 
         let data = BarChartData(dataSet: set1)
         data.setValueFont(UIFont(name:"HelveticaNeue-Light", size:10)!)
         data.barWidth = barWidth
 
-        chartView.data = data
+        barChartView.data = data
+    }
+
+    private func addLineChartView() {
+        view.addSubview(lineChartView)
+
+        lineChartView.edgesToSuperview(excluding: .bottom,
+                                   insets: TinyEdgeInsets(top: padding,
+                                                          left: padding,
+                                                          bottom: 0,
+                                                          right: -padding))
+        lineChartView.heightToSuperview(multiplier: 0.4)
+
+//        chartView.delegate = self
+
+        lineChartView.chartDescription?.enabled = false
+
+        lineChartView.leftAxis.enabled = false
+        lineChartView.rightAxis.drawAxisLineEnabled = false
+        lineChartView.xAxis.drawAxisLineEnabled = false
+
+        lineChartView.drawBordersEnabled = false
+        lineChartView.setScaleEnabled(true)
+
+        let l = lineChartView.legend
+        l.horizontalAlignment = .right
+        l.verticalAlignment = .top
+        l.orientation = .vertical
+        l.drawInside = false
+        //        chartView.legend = l
+        self.setLineChartDataCount(5, range: 75)
+    }
+
+    func setLineChartDataCount(_ count: Int, range: UInt32) {
+        let colors = ChartColorTemplates.vordiplom()[0...2]
+
+        let block: (Int) -> ChartDataEntry = { (i) -> ChartDataEntry in
+            let val = Double(arc4random_uniform(range) + 3)
+            return ChartDataEntry(x: Double(i), y: val)
+        }
+        let dataSets = (0..<3).map { i -> LineChartDataSet in
+            let yVals = (0..<count).map(block)
+            let set = LineChartDataSet(values: yVals, label: "DataSet \(i)")
+            set.lineWidth = 2.5
+            set.circleRadius = 4
+            set.circleHoleRadius = 2
+            let color = colors[i % colors.count]
+            set.setColor(color)
+            set.setCircleColor(color)
+
+            return set
+        }
+
+        dataSets[0].lineDashLengths = [5, 5]
+        dataSets[0].colors = ChartColorTemplates.vordiplom()
+        dataSets[0].circleColors = ChartColorTemplates.vordiplom()
+
+        let data = LineChartData(dataSets: dataSets)
+        data.setValueFont(.systemFont(ofSize: 7, weight: .light))
+        lineChartView.data = data
     }
 }
