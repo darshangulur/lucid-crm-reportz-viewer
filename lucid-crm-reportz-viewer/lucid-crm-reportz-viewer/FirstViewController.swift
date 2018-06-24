@@ -51,13 +51,14 @@ class FirstViewController: UIViewController {
                                                            right: -padding))
         titleLabel.topToBottom(of: chartView, offset: padding / 4)
     }
+    
     private func addCombinedChartView() {
         view.addSubview(chartView)
 
         chartView.edgesToSuperview(excluding: .bottom,
                                    insets: TinyEdgeInsets(top: padding,
                                                           left: padding,
-                                                          bottom: padding * 2,
+                                                          bottom: 0,
                                                           right: -padding))
 
 //        chartView.delegate = self
@@ -93,6 +94,7 @@ class FirstViewController: UIViewController {
         xAxis.granularity = 1
         xAxis.valueFormatter = self
 
+        chartView.animate(yAxisDuration: 1.5)
         self.setChartData()
     }
 

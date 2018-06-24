@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E042462A20DEAF570075D146 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E042462920DEAF570075D146 /* Charts.framework */; };
 		E042462F20DED9E30075D146 /* TinyConstraints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E042462E20DED9E30075D146 /* TinyConstraints.framework */; };
+		E042463420DF1CFC0075D146 /* StringValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E042463320DF1CFC0075D146 /* StringValueFormatter.swift */; };
 		E06C23E620DEA2A200C94BB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06C23E520DEA2A200C94BB2 /* AppDelegate.swift */; };
 		E06C23E820DEA2A200C94BB2 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06C23E720DEA2A200C94BB2 /* FirstViewController.swift */; };
 		E06C23EA20DEA2A300C94BB2 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06C23E920DEA2A300C94BB2 /* SecondViewController.swift */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		E042462920DEAF570075D146 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = Carthage/Build/iOS/Charts.framework; sourceTree = "<group>"; };
 		E042462E20DED9E30075D146 /* TinyConstraints.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TinyConstraints.framework; path = Carthage/Build/iOS/TinyConstraints.framework; sourceTree = "<group>"; };
+		E042463320DF1CFC0075D146 /* StringValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringValueFormatter.swift; sourceTree = "<group>"; };
 		E06C23E220DEA2A200C94BB2 /* lucid-crm-reportz-viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "lucid-crm-reportz-viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E06C23E520DEA2A200C94BB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E06C23E720DEA2A200C94BB2 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +75,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E042463120DF1CE50075D146 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E042463220DF1CED0075D146 /* Formatters */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		E042463220DF1CED0075D146 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				E042463320DF1CFC0075D146 /* StringValueFormatter.swift */,
+			);
+			path = Formatters;
+			sourceTree = "<group>";
+		};
 		E06C23D920DEA2A200C94BB2 = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +113,7 @@
 		E06C23E420DEA2A200C94BB2 /* lucid-crm-reportz-viewer */ = {
 			isa = PBXGroup;
 			children = (
+				E042463120DF1CE50075D146 /* Common */,
 				E06C23E520DEA2A200C94BB2 /* AppDelegate.swift */,
 				E06C23E720DEA2A200C94BB2 /* FirstViewController.swift */,
 				E06C23E920DEA2A300C94BB2 /* SecondViewController.swift */,
@@ -238,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E06C23EA20DEA2A300C94BB2 /* SecondViewController.swift in Sources */,
+				E042463420DF1CFC0075D146 /* StringValueFormatter.swift in Sources */,
 				E06C23E620DEA2A200C94BB2 /* AppDelegate.swift in Sources */,
 				E06C23E820DEA2A200C94BB2 /* FirstViewController.swift in Sources */,
 			);
