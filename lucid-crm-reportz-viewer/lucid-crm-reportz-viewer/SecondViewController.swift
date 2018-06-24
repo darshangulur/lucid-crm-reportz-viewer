@@ -119,7 +119,7 @@ class SecondViewController: UIViewController {
 
         chartView.xAxis.valueFormatter = StringValueFormatter(
             chart: chartView,
-            strings: ["Blue Resorts", "James Corp", "BMC Metro works"]
+            strings: ["Blue Resorts", "James Corp", "BMC Metro Works"]
         )
 
         let set1 = BarChartDataSet(values: yVals, label: "Performance of teams in Q1 (out of \(range)")
