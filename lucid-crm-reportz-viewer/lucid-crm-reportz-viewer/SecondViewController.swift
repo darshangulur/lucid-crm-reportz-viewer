@@ -21,6 +21,7 @@ class SecondViewController: UIViewController {
         return $0
     }(UILabel())
 
+    private let datasets = ["Hamilton Hotels Group", "Blue State Insurance Corp.", "Hudson Metro Works"]
     private let padding: CGFloat = 100
     private var barChartView = HorizontalBarChartView()
     private var lineChartView = LineChartView()
@@ -32,13 +33,13 @@ class SecondViewController: UIViewController {
         view.backgroundColor = .white
         addSubViews()
 
-        titleLabel.text = "Performances this month and future targets"
+        titleLabel.text = "Team Performances in Q1"
     }
 
     // MARK: - Private functions
     private func addSubViews() {
         addLineChartView()
-        addCombinedChartView()
+        addBarChartView()
         view.addSubview(titleLabel)
 
         titleLabel.edgesToSuperview(excluding: .top,
@@ -49,7 +50,7 @@ class SecondViewController: UIViewController {
         titleLabel.topToBottom(of: barChartView, offset: padding / 4)
     }
     
-    private func addCombinedChartView() {
+    private func addBarChartView() {
         view.addSubview(barChartView)
 
         barChartView.edgesToSuperview(excluding: [.top, .bottom],
@@ -122,10 +123,10 @@ class SecondViewController: UIViewController {
 
         barChartView.xAxis.valueFormatter = StringValueFormatter(
             chart: barChartView,
-            strings: ["Hamilton Hotels Group", "Blue state Insurance Corp.", "Hudson Metro Works"]
+            strings: datasets
         )
 
-        let set1 = BarChartDataSet(values: yVals, label: "Team Performances in Q1 (out of \(range)")
+        let set1 = BarChartDataSet(values: yVals, label: "Team Performances in Q1 (out of \(range))")
         set1.drawIconsEnabled = false
 
         let data = BarChartData(dataSet: set1)
@@ -162,7 +163,7 @@ class SecondViewController: UIViewController {
         l.orientation = .vertical
         l.drawInside = false
         //        chartView.legend = l
-        self.setLineChartDataCount(5, range: 75)
+        self.setLineChartDataCount(19, range: 75)
     }
 
     func setLineChartDataCount(_ count: Int, range: UInt32) {
@@ -172,9 +173,10 @@ class SecondViewController: UIViewController {
             let val = Double(arc4random_uniform(range) + 3)
             return ChartDataEntry(x: Double(i), y: val)
         }
-        let dataSets = (0..<3).map { i -> LineChartDataSet in
+
+        let dataSets = (0..<datasets.count).map { i -> LineChartDataSet in
             let yVals = (0..<count).map(block)
-            let set = LineChartDataSet(values: yVals, label: "DataSet \(i)")
+            let set = LineChartDataSet(values: yVals, label: datasets[i])
             set.lineWidth = 2.5
             set.circleRadius = 4
             set.circleHoleRadius = 2
