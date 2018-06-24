@@ -163,6 +163,7 @@ class SecondViewController: UIViewController {
         l.orientation = .vertical
         l.drawInside = false
         //        chartView.legend = l
+        lineChartView.animate(xAxisDuration: 1)
         self.setLineChartDataCount(19, range: 75)
     }
 
