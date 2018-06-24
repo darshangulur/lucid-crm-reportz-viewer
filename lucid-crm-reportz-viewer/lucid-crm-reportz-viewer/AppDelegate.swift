@@ -18,10 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = UITabBarController()
 
         let firstViewController = FirstViewController()
-        firstViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .featured, tag: 0)
+        firstViewController.tabBarItem = UITabBarItem(title: "Sales",
+                                                      image: UIImage(named: "first"),
+                                                      selectedImage: nil)
 
         let secondViewController = SecondViewController()
-        secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1)
+        secondViewController.tabBarItem = UITabBarItem(title: "Performances",
+                                                       image: UIImage(named: "second"),
+                                                       selectedImage: nil)
 
         tabBarController.viewControllers = [firstViewController, secondViewController]
         let navigationController = UINavigationController(rootViewController: tabBarController)
